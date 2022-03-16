@@ -6,7 +6,9 @@
     "moduleResolution": "node",                       /* Specify how TypeScript looks up a file from a given module specifier. */
     "baseUrl": ".",                                  /* Specify the base directory to resolve non-relative module names. */
     "paths": {
-      "@src/*": ["src/*"]
+      "@src/*": ["src/*"],
+      "@utility": ["src/utility/helpers.ts"],
+      "@models": ["src/models/index.ts"],
     },                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
     "outDir": "./dist",                                   /* Specify an output folder for all emitted files. */
     "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility. */

@@ -1,5 +1,5 @@
 {
-  "name": "node-with-typescript",
+  "name": "fee-processing",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -17,10 +17,8 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
-    "@types/module-alias": "^2.0.1",
     "@types/node": "^17.0.5",
     "i": "^0.3.7",
-    "module-alias": "^2.2.2",
     "nodemon": "^2.0.15",
     "npm": "^8.3.0",
     "ts-node": "^10.4.0",
