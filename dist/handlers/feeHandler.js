@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const _utility_1 = __importDefault(require("../utility/helpers.js"));
+const helpers_1 = __importDefault(require("../utils/helpers"));
 const fs_1 = __importDefault(require("fs"));
 const feeConfigurationSetup = (req, res) => {
     const response = {};
@@ -37,7 +37,7 @@ const feeComputation = (req, res) => {
         const storedData = fs_1.default.readFileSync('store.json');
         const feeConfigSettings = JSON.parse(storedData);
         // Get fee configurations that can be applied to the given transaction
-        const matchedConfigs = _utility_1.default.getMatchedConfiguration(paymentData, feeConfigSettings);
+        const matchedConfigs = helpers_1.default.getMatchedConfiguration(paymentData, feeConfigSettings);
         // Check if there are configurations applicable to the given transaction
         if (!matchedConfigs.length) {
             response.Error = 'No fee configuration is applicable to this transaction';
@@ -47,12 +47,12 @@ const feeComputation = (req, res) => {
         // that can be applied to the given transaction. 
         var specificFeeConfig;
         if (matchedConfigs.length > 1)
-            specificFeeConfig = _utility_1.default.getSpecificFeeConfig(matchedConfigs);
+            specificFeeConfig = helpers_1.default.getSpecificFeeConfig(matchedConfigs);
         else
             specificFeeConfig = matchedConfigs[0].split(' ');
         const [feeId, , , , , feeType, feeValue] = specificFeeConfig;
         // Conpute the applied fee and the amount to charge
-        const appliedFee = _utility_1.default.getAppliedFee(feeType, feeValue, paymentData.Amount);
+        const appliedFee = helpers_1.default.getAppliedFee(feeType, feeValue, paymentData.Amount);
         const amountCharged = paymentData.Amount + (paymentData.Customer.BearsFee ? appliedFee : 0);
         response = {
             AppliedFeeID: feeId,

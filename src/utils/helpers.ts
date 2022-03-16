@@ -40,7 +40,9 @@ function getSpecificFeeConfig(configs: string[]): Array<string> {
     // loop through the matched configurations and check for the
     // configuration with less or no non-specific properties
     for (let feeSetting of configs) {
-        if (feeSetting.split('*').length - 1 <= maxNonSpecificProperty) {
+        const nonSpecificProperties = feeSetting.split('*').length - 1
+        if (nonSpecificProperties <= maxNonSpecificProperty) {
+            maxNonSpecificProperty = nonSpecificProperties
             specificFeeConfig = feeSetting.split(' ')
         }
     }

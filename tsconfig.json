@@ -7,7 +7,7 @@
     "baseUrl": ".",                                  /* Specify the base directory to resolve non-relative module names. */
     "paths": {
       "@src/*": ["src/*"],
-      "@utility": ["src/utility/helpers.ts"],
+      "@utility": ["src/utils/helpers.ts"],
       "@models": ["src/models/index.ts"],
     },                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
     "outDir": "./dist",                                   /* Specify an output folder for all emitted files. */

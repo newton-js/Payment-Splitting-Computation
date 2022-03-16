@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { FeeConfigResponse, FeeComputationResponse } from '@models';
-import helpers from '@utility'
+import helpers from '../utils/helpers'
 import fs from'fs';
 
 const feeConfigurationSetup = (req: Request, res: Response) => {
