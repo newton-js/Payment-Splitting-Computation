@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import handler from '../handlers/feeHandler'
+import handler from '../controllers/feeController'
 
 const router: Router = express.Router();
 

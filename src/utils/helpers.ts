@@ -1,6 +1,6 @@
 import { PaymentData } from '@models'
 
-function getMatchedConfiguration (paymentData: PaymentData, feeConfigArr: Array<string>): string[] {
+function getMatchedConfiguration (paymentData: PaymentData, feeConfigArr: Array<string>): Array<string> {
     const {ID, Type, Issuer, Brand, Number, SixID, Country} = paymentData.PaymentEntity
     const Locale = Country === paymentData.CurrencyCountry ? 'LOCL' : 'INTL'
     const matchedConfiguration = []
@@ -30,7 +30,7 @@ function getMatchedConfiguration (paymentData: PaymentData, feeConfigArr: Array<
     return matchedConfiguration
 }
 
-function getSpecificFeeConfig(configs: string[]): Array<string> {
+function getSpecificFeeConfig(configs: Array<string>): Array<string> {
     var specificFeeConfig = ['']
 
     // The possible non specific property we can have is 4

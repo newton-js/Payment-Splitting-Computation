@@ -29,7 +29,7 @@ const feeConfigurationSetup = (req: Request, res: Response) => {
     }
     catch (err: any) {
         response.error = `Something went wrong: ${err}`
-        res.status(500).send(response);
+        res.status(400).send(response);
     }
 }
 

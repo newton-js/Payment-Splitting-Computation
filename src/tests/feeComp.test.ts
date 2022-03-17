@@ -44,7 +44,7 @@ describe('POST /compute-transaction-fee', () => {
             })
       });
 
-      it('Should return 400 error statusCode for no applicable configuration', async () => {
+      it('Should return 400 error statusCode if no configuration is applicable', async () => {
         const res = await request(app)
             .post('/compute-transaction-fee')
             .send(mockedTransactionData.transaction3)
