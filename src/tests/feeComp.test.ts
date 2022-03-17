@@ -1,14 +1,13 @@
 import 'jest';
 import request from 'supertest' 
 import express from 'express'
-import feeRoute from '../routes/feesRoute'
+import feeRoute from '../routes/feeRoute'
 import { mockedTransactionData, mockedFeeConfigurations } from '../data/mockedData'
 
 const app = express()
 
 app.use(express.json())
 app.use('/', feeRoute)
-
 
 describe('POST /compute-transaction-fee', () => {
     beforeAll(async() => {

@@ -1,6 +1,6 @@
 import express, { Application } from 'express'
 import bodyParser from 'body-parser'
-import feeRoute from '@src/routes/feesRoute'
+import feeRoute from '@src/routes/feeRoute'
 
 const port: string | number = process.env.PORT || 5000
 const app: Application = express()

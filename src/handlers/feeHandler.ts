@@ -35,15 +35,23 @@ const feeConfigurationSetup = (req: Request, res: Response) => {
 
 const feeComputation = (req: Request, res: Response) => {
     var response = <FeeComputationResponse>{}
-    const paymentData = req.body
+    const transactionData = req.body
 
     try {
         // Get/Read the configuration settings stored in store.json file
-        const storedData: any = fs.readFileSync('store.json');
-        const feeConfigSettings: Array<string> = JSON.parse(storedData);
+        var feeConfigSettings: Array<string>;
+        try {
+            const storedData: any = fs.readFileSync('store.json');
+            feeConfigSettings = JSON.parse(storedData);
+        }
+        catch (err) {
+            // Fee configuration setup API has not been called
+            response.Error = 'No fee configuration settings has been posted'
+            return res.status(500).send(response)
+        }
 
         // Get fee configurations that can be applied to the given transaction
-        const matchedConfigs = helpers.getMatchedConfiguration(paymentData, feeConfigSettings)
+        const matchedConfigs = helpers.getMatchedConfiguration(transactionData, feeConfigSettings)
 
         // Check if there are configurations applicable to the given transaction
         if(!matchedConfigs.length) {
@@ -60,8 +68,8 @@ const feeComputation = (req: Request, res: Response) => {
         const [feeId, , , , , feeType, feeValue] = specificFeeConfig
 
         // Conpute the applied fee and the amount to charge
-        const appliedFee = helpers.getAppliedFee(feeType, feeValue, paymentData.Amount)
-        const amountCharged = paymentData.Amount + (paymentData.Customer.BearsFee ? appliedFee : 0)
+        const appliedFee = helpers.getAppliedFee(feeType, feeValue, transactionData.Amount)
+        const amountCharged = transactionData.Amount + (transactionData.Customer.BearsFee ? appliedFee : 0)
 
         response = {
             AppliedFeeID: feeId,

@@ -1,7 +1,7 @@
 import 'jest';
 import request from 'supertest' 
 import express from 'express'
-import feeRoute from '../routes/feesRoute'
+import feeRoute from '../routes/feeRoute'
 import { mockedFeeConfigurations } from '../data/mockedData';
 
 const app = express()
@@ -9,13 +9,12 @@ const app = express()
 app.use(express.json())
 app.use('/', feeRoute)
 
-
 describe('POST /fees', () => {
     it('Should return a 400 error statusCode', async () => {
         const res = await request(app)
             .post('/fees')
             .send({
-            FeeConfigurationSpec: ''
+                FeeConfigurationSpec: ''
             })
             expect(res.statusCode).toEqual(400)
             expect(res.body).toHaveProperty('error')

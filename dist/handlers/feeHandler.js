@@ -31,13 +31,21 @@ const feeConfigurationSetup = (req, res) => {
 };
 const feeComputation = (req, res) => {
     var response = {};
-    const paymentData = req.body;
+    const transactionData = req.body;
     try {
         // Get/Read the configuration settings stored in store.json file
-        const storedData = fs_1.default.readFileSync('store.json');
-        const feeConfigSettings = JSON.parse(storedData);
+        var feeConfigSettings;
+        try {
+            const storedData = fs_1.default.readFileSync('store.json');
+            feeConfigSettings = JSON.parse(storedData);
+        }
+        catch (err) {
+            // Fee configuration setup API has not been called
+            response.Error = 'No fee configuration settings has been posted';
+            return res.status(500).send(response);
+        }
         // Get fee configurations that can be applied to the given transaction
-        const matchedConfigs = helpers_1.default.getMatchedConfiguration(paymentData, feeConfigSettings);
+        const matchedConfigs = helpers_1.default.getMatchedConfiguration(transactionData, feeConfigSettings);
         // Check if there are configurations applicable to the given transaction
         if (!matchedConfigs.length) {
             response.Error = 'No fee configuration is applicable to this transaction';
@@ -52,8 +60,8 @@ const feeComputation = (req, res) => {
             specificFeeConfig = matchedConfigs[0].split(' ');
         const [feeId, , , , , feeType, feeValue] = specificFeeConfig;
         // Conpute the applied fee and the amount to charge
-        const appliedFee = helpers_1.default.getAppliedFee(feeType, feeValue, paymentData.Amount);
-        const amountCharged = paymentData.Amount + (paymentData.Customer.BearsFee ? appliedFee : 0);
+        const appliedFee = helpers_1.default.getAppliedFee(feeType, feeValue, transactionData.Amount);
+        const amountCharged = transactionData.Amount + (transactionData.Customer.BearsFee ? appliedFee : 0);
         response = {
             AppliedFeeID: feeId,
             AppliedFeeValue: appliedFee,
