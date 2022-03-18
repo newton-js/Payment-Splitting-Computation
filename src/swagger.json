@@ -1,0 +1,228 @@
+{
+  "swagger": "2.0",
+  "info": {
+      "title": "Fee Processing Service RESTFUL API",
+      "description": "Fee Processing Service RESTFUL API is an api that exposes lannister-pay to fee processing endpoints",
+      "termsOfService": "http://swagger.io/terms/",
+      "contact": {
+          "name": "Ridwan Kolawole",
+          "email": "olaniyi.jibola152@gmail.com"
+      },
+      "license": {
+          "name": "MIT",
+          "url": "https://opensource.org/licenses/MIT"
+      },
+      "version": "1.0.0"
+  },
+  "host": "localhost:5000",
+  "tags": [
+      {
+        "name": "Fee",
+        "description": "API endpoint for Fee processing"
+      }
+  ],
+  "paths": {
+      "/fees": {
+        "post": {
+          "tags": ["Fee Configurations"],
+          "summary": "Receive and save all fee configurations",
+          "description": "",
+          "operationId": "FeeConfigurationSettings",
+          "parameters": [
+              {
+                  "name": "Fee Configurations Settings",
+                  "in": "body",
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "FeeConfigurationSpec": {
+                      "type": "string",
+                      "example": "LNPY1221 NGN * *(*) : APPLY PERC 1.4\nLNPY1223 NGN LOCL CREDIT-CARD(*) : APPLY FLAT_PERC 50:1.4\nLNPY1224 NGN * BANK-ACCOUNT(*) : APPLY FLAT 100"
+                    }
+                  }
+              }
+          ],
+          "produces": ["application/json"],
+          "responses": {
+            "200": {
+              "description": "Fee Configurations received, formated and saved successfully",
+              "schema": {
+                "$ref": "#/definitions/ConfigurationResponse"
+              }
+            },
+            "400": {
+              "description": "An error occured while formating or saving fee configurations",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "type": "string",
+                    "example": "No fee configuration is provided"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/compute-transaction-fee": {
+          "post": {
+            "tags": ["Fee Computation"],
+            "summary": "Receive transaction data, process it and return charges applied to the transaction",
+            "description": "",
+            "operationId": "FeeComputation",
+            "parameters": [
+              {
+                "name": "Transaction Fee Computation",
+                "in": "body",
+                "description": "",
+                "schema": {
+                  "$ref": "#/definitions/TransactionData"
+                }
+              }
+            ],
+            "produces": ["application/json"],
+            "responses": {
+              "200": {
+                "description": "Transaction processed, specific fee configuration applied and charges are calculated and returned successfully",
+                "schema": {
+                  "$ref": "#/definitions/TransactionCharges"
+                }
+              },
+              "400": {
+                "description": "No configuration is applicable to the given transaction",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error": {
+                      "type": "string",
+                      "example": "No fee configuration is applicable to this transaction"
+                    }
+                  }
+                }
+              },
+              "500": {
+                "description": "Internal server error as a result of bad input supplied",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Error": {
+                      "type": "string",
+                      "example": "Something went wrong"
+                    }
+                  }
+                }
+              }
+            }
+          }
+      }
+  },
+  "definitions": {
+    "TransactionData": {
+      "type": "object",
+      "properties": {
+          "ID": {
+            "type": "number",
+            "example": 67228
+          },
+          "Amount": {
+            "type": "number",
+            "example": 73000
+          },
+          "Currency": {
+            "type": "string",
+            "example": "NGN"
+          },
+          "CurrencyCountry": {
+            "type": "string",
+            "example": "NG"
+          },
+          "Customer": {
+            "type": "object",
+            "properties": {
+              "ID": {
+                "type": "number",
+                "example": 62892
+              },
+              "EmailAddress": {
+                "type": "string",
+                "example": "anonimized29900@anon.io"
+              },
+              "FullName": {
+                "type": "string",
+                "example": "Ridwan Kolawole"
+              },
+              "BearsFee": {
+                "type": "boolean",
+                "example": true
+              }
+            }
+          },
+          "PaymentEntity": {
+            "type": "object",
+            "properties": {
+              "ID": {
+                "type": "number",
+                "example": 768981
+              },
+              "Issuer": {
+                "type": "string",
+                "example": "GTBANK"
+              },
+              "Brand": {
+                "type": "string",
+                "example": "MASTERCARD"
+              },
+              "Number": {
+                "type": "string",
+                "example": "561772******6716"
+              },
+              "SixID": {
+                "type": "number",
+                "example": 677677
+              },
+              "Type": {
+                "type": "string",
+                "example": "CREDIT-CARD"
+              },
+              "Country": {
+                "type": "string",
+                "example": "NG"
+              }
+            }
+          }
+        }
+      },
+    "ConfigurationResponse": {
+      "type": "object",
+      "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          }
+        }
+      },
+      "TransactionCharges": {
+        "type": "object",
+        "properties": {
+          "AppliedFeeID": {
+            "type": "string",
+            "example": "LNPY1236"
+          },
+          "AppliedFeeValue": {
+            "type": "number",
+            "example": 32000
+          },
+          "ChargeAmount": {
+            "type": "number",
+            "example": 56600
+          },
+          "SettlementAmount": {
+            "type": "number",
+            "example": 1700
+          }
+        }
+      }
+    }
+    
+}
