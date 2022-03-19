@@ -15,12 +15,14 @@ function getMatchedConfiguration (transactionData: PaymentData, feeConfigArr: Ar
     
         // Compare the properties of a configuration with the properties of the transaction
         if (
-           (configCurrency === transactionData.Currency || configCurrency === '*') 
+            (configCurrency === transactionData.Currency || configCurrency === '*') 
             && (configLocale === Locale || configLocale === '*') 
             && (configEntity === Type || configEntity === '*') 
-            && (configEntityProperty === '*' || configEntityProperty === String(ID) || configEntityProperty === Issuer || configEntityProperty === Brand || configEntityProperty === Number || configEntityProperty === String(SixID))
-        )
-        {
+            && (configEntityProperty === '*' || configEntityProperty === String(ID) 
+                || configEntityProperty === Issuer || configEntityProperty === Brand 
+                || configEntityProperty === Number || configEntityProperty === String(SixID)
+                )
+        ){
             matchedConfiguration.push(itemToArr.join(' '))
         }
     }

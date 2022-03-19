@@ -14,7 +14,7 @@
       },
       "version": "1.0.0"
   },
-  "host": "localhost:5000",
+  "host": "https://lannister-fee-processing.herokuapp.com",
   "tags": [
       {
         "name": "Fee",
@@ -86,7 +86,7 @@
               "200": {
                 "description": "Transaction processed, specific fee configuration applied and charges are calculated and returned successfully",
                 "schema": {
-                  "$ref": "#/definitions/TransactionCharges"
+                  "$ref": "#/definitions/FeeComputationResponse"
                 }
               },
               "400": {
@@ -202,7 +202,7 @@
           }
         }
       },
-      "TransactionCharges": {
+      "FeeComputationResponse": {
         "type": "object",
         "properties": {
           "AppliedFeeID": {
