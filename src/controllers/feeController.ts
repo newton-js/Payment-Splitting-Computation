@@ -33,7 +33,7 @@ const feeConfigurationSetup = (req: Request, res: Response) => {
     }
 }
 
-const feeComputation = (req: Request, res: Response) => {
+const transactionFeeComputation = (req: Request, res: Response) => {
     var response = <FeeComputationResponse>{}
     const transactionData = req.body
 
@@ -87,5 +87,5 @@ const feeComputation = (req: Request, res: Response) => {
 
 export default {
     feeConfigurationSetup,
-    feeComputation
+    transactionFeeComputation
 }

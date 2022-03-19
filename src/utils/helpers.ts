@@ -1,8 +1,8 @@
 import { PaymentData } from '@models'
 
-function getMatchedConfiguration (paymentData: PaymentData, feeConfigArr: Array<string>): Array<string> {
-    const {ID, Type, Issuer, Brand, Number, SixID, Country} = paymentData.PaymentEntity
-    const Locale = Country === paymentData.CurrencyCountry ? 'LOCL' : 'INTL'
+function getMatchedConfiguration (transactionData: PaymentData, feeConfigArr: Array<string>): Array<string> {
+    const {ID, Type, Issuer, Brand, Number, SixID, Country} = transactionData.PaymentEntity
+    const Locale = Country === transactionData.CurrencyCountry ? 'LOCL' : 'INTL'
     const matchedConfiguration = []
 
     // Loop through the formated configurations and do some checks
@@ -14,10 +14,8 @@ function getMatchedConfiguration (paymentData: PaymentData, feeConfigArr: Array<
         const [, configCurrency, configLocale, configEntity, configEntityProperty] = itemToArr
     
         // Compare the properties of a configuration with the properties of the transaction
-        // if it matches, add the configuration to the configurations
-        // that could be applied to the transaction.
         if (
-           (configCurrency === paymentData.Currency || configCurrency === '*') 
+           (configCurrency === transactionData.Currency || configCurrency === '*') 
             && (configLocale === Locale || configLocale === '*') 
             && (configEntity === Type || configEntity === '*') 
             && (configEntityProperty === '*' || configEntityProperty === String(ID) || configEntityProperty === Issuer || configEntityProperty === Brand || configEntityProperty === Number || configEntityProperty === String(SixID))
@@ -47,7 +45,6 @@ function getSpecificFeeConfig(configs: Array<string>): Array<string> {
         }
     }
 
-    //console.log({specificFeeConfig})
     return specificFeeConfig
 }
 
