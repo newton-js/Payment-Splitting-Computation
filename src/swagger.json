@@ -14,7 +14,7 @@
       },
       "version": "1.0.0"
   },
-  "host": "https://lannister-fee-processing.herokuapp.com",
+  "host": "lannister-fee-processing.herokuapp.com",
   "tags": [
       {
         "name": "Fee",
