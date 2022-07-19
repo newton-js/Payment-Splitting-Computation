@@ -1,12 +1,12 @@
 {
   "swagger": "2.0",
   "info": {
-      "title": "Fee Processing Service RESTFUL API",
-      "description": "Fee Processing Service RESTFUL API is an api that exposes lannister-pay to fee processing endpoints",
+      "title": "Transaction Payment Splitting Service RESTFUL API",
+      "description": "Transaction Payment Splitting Service RESTFUL API is an api that exposes lannister-pay to payment splitting computation endpoint",
       "termsOfService": "http://swagger.io/terms/",
       "contact": {
-          "name": "Ridwan Kolawole",
-          "email": "olaniyi.jibola152@gmail.com"
+          "name": "Idreez Yusuf",
+          "email": "idreezyusuf@gmail.com"
       },
       "license": {
           "name": "MIT",
@@ -14,7 +14,7 @@
       },
       "version": "1.0.0"
   },
-  "host": "lannister-fee-processing.herokuapp.com",
+  "host": "lannisterpay-payment-splitting-computation.herokuapp.com",
   "tags": [
       {
         "name": "Fee",
@@ -22,93 +22,38 @@
       }
   ],
   "paths": {
-      "/fees": {
-        "post": {
-          "tags": ["Fee Configurations"],
-          "summary": "Receive and save all fee configurations",
-          "description": "",
-          "operationId": "FeeConfigurationSettings",
-          "parameters": [
-              {
-                  "name": "Fee Configurations Settings",
-                  "in": "body",
-                  "description": "",
-                  "type": "object",
-                  "properties": {
-                    "FeeConfigurationSpec": {
-                      "type": "string",
-                      "example": "LNPY1221 NGN * *(*) : APPLY PERC 1.4\nLNPY1223 NGN LOCL CREDIT-CARD(*) : APPLY FLAT_PERC 50:1.4\nLNPY1224 NGN * BANK-ACCOUNT(*) : APPLY FLAT 100"
-                    }
-                  }
-              }
-          ],
-          "produces": ["application/json"],
-          "responses": {
-            "200": {
-              "description": "Fee Configurations received, formated and saved successfully",
-              "schema": {
-                "$ref": "#/definitions/ConfigurationResponse"
-              }
-            },
-            "400": {
-              "description": "An error occured while formating or saving fee configurations",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "error": {
-                    "type": "string",
-                    "example": "No fee configuration is provided"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/compute-transaction-fee": {
+      "/split-payments/compute": {
           "post": {
-            "tags": ["Fee Computation"],
-            "summary": "Receive transaction data, process it and return charges applied to the transaction",
+            "tags": ["Payment Splitting Computation"],
+            "summary": " The endpoint is meant to calculate the amount due to one or more split payment 'entities' as well as the amount left after all splits have been computed.",
             "description": "",
-            "operationId": "FeeComputation",
+            "operationId": "PaymentSplittingComputation",
             "parameters": [
               {
-                "name": "Transaction Fee Computation",
+                "name": "Transaction Payment Splitting Computation",
                 "in": "body",
                 "description": "",
                 "schema": {
-                  "$ref": "#/definitions/TransactionData"
+                  "$ref": "#/definitions/PayloadData"
                 }
               }
             ],
             "produces": ["application/json"],
             "responses": {
               "200": {
-                "description": "Transaction processed, specific fee configuration applied and charges are calculated and returned successfully",
+                "description": "Transaction payment splitting is computed successfully",
                 "schema": {
-                  "$ref": "#/definitions/FeeComputationResponse"
+                  "$ref": "#/definitions/PaymentSplitterResponse"
                 }
               },
               "400": {
-                "description": "No configuration is applicable to the given transaction",
+                "description": "Error occured during payment splitting computation",
                 "schema": {
                   "type": "object",
                   "properties": {
                     "Error": {
                       "type": "string",
-                      "example": "No fee configuration is applicable to this transaction"
-                    }
-                  }
-                }
-              },
-              "500": {
-                "description": "Internal server error as a result of bad input supplied",
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "Error": {
-                      "type": "string",
-                      "example": "Something went wrong"
+                      "example": "Error: 'SplitInfo' array can contain only a minimum of 1 split entity and a maximum of 20 entities."
                     }
                   }
                 }
@@ -118,108 +63,56 @@
       }
   },
   "definitions": {
-    "TransactionData": {
+    "PayloadData": {
       "type": "object",
       "properties": {
           "ID": {
             "type": "number",
-            "example": 67228
+            "example": 1528
           },
           "Amount": {
             "type": "number",
-            "example": 73000
+            "example": 12850
           },
           "Currency": {
             "type": "string",
             "example": "NGN"
           },
-          "CurrencyCountry": {
+          "CustomerEmail": {
             "type": "string",
-            "example": "NG"
+            "example": "example@gmail.com"
           },
-          "Customer": {
-            "type": "object",
-            "properties": {
-              "ID": {
-                "type": "number",
-                "example": 62892
-              },
-              "EmailAddress": {
-                "type": "string",
-                "example": "anonimized29900@anon.io"
-              },
-              "FullName": {
-                "type": "string",
-                "example": "Ridwan Kolawole"
-              },
-              "BearsFee": {
-                "type": "boolean",
-                "example": true
+          "SplitInfo": {
+            "type": "array",
+            "example": [
+              {
+                "SplitType": "FLAT",
+                "SplitValue": 45,
+                "SplitEntityId": "LNPYACC0019"
               }
-            }
-          },
-          "PaymentEntity": {
-            "type": "object",
-            "properties": {
-              "ID": {
-                "type": "number",
-                "example": 768981
-              },
-              "Issuer": {
-                "type": "string",
-                "example": "GTBANK"
-              },
-              "Brand": {
-                "type": "string",
-                "example": "MASTERCARD"
-              },
-              "Number": {
-                "type": "string",
-                "example": "561772******6716"
-              },
-              "SixID": {
-                "type": "number",
-                "example": 677677
-              },
-              "Type": {
-                "type": "string",
-                "example": "CREDIT-CARD"
-              },
-              "Country": {
-                "type": "string",
-                "example": "NG"
-              }
-            }
+            ]
           }
         }
       },
-    "ConfigurationResponse": {
+    "PaymentSplitterResponse": {
       "type": "object",
       "properties": {
-          "status": {
-            "type": "string",
-            "example": "ok"
-          }
-        }
-      },
-      "FeeComputationResponse": {
-        "type": "object",
-        "properties": {
-          "AppliedFeeID": {
-            "type": "string",
-            "example": "LNPY1236"
-          },
-          "AppliedFeeValue": {
+          "ID": {
             "type": "number",
-            "example": 32000
+            "example": "1308"
           },
-          "ChargeAmount": {
+          "Balance": {
             "type": "number",
-            "example": 56600
+            "example": 0
           },
-          "SettlementAmount": {
-            "type": "number",
-            "example": 1700
+          "SplitBreakdown": {
+            "type": "array",
+            "example": [
+              {
+                "SplitEntityId": "LNPYACC0019",
+                "Amount": 450
+              }
+            ]
           }
         }
       }
