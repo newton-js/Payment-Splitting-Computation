@@ -1,4 +1,4 @@
-# Lannister-Pay
+# Lannister-Pay TPSS
 A node.js app transaction payment spliiting computation API
 
 # To start the app
