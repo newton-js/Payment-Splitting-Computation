@@ -2,7 +2,7 @@
 A node.js app transaction payment spliiting computation API
 
 # To start the app
-- install typescript and ts-node globally using "npm run -g typescript ts-node"
+- install typescript and ts-node globally using "npm install -g typescript ts-node"
 - run "npm install"
 - run "npm run dev"
 
