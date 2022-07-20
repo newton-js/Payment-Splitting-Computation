@@ -14,7 +14,7 @@
         },
         "version": "1.0.0"
     },
-    "host": "lannisterpay-payment-splitting-computation.herokuapp.com",
+    "host": "payment-splitting-computation.herokuapp.com",
     "tags": [
         {
             "name": "Fee",
