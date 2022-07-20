@@ -9,3 +9,4 @@ A node.js app transaction payment spliiting computation API
 # To run unit test
 - run "npm run test"
 
+
