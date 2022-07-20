@@ -1,0 +1,120 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Transaction Payment Splitting Service RESTFUL API",
+        "description": "Transaction Payment Splitting Service RESTFUL API is an api that exposes lannister-pay to payment splitting computation endpoint",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "Idreez Yusuf",
+            "email": "idreezyusuf@gmail.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0.0"
+    },
+    "host": "lannisterpay-payment-splitting-computation.herokuapp.com",
+    "tags": [
+        {
+            "name": "Fee",
+            "description": "API endpoint for Fee processing"
+        }
+    ],
+    "paths": {
+        "/split-payments/compute": {
+            "post": {
+                "tags": ["Payment Splitting Computation"],
+                "summary": " The endpoint is meant to calculate the amount due to one or more split payment 'entities' as well as the amount left after all splits have been computed.",
+                "description": "",
+                "operationId": "PaymentSplittingComputation",
+                "parameters": [
+                    {
+                        "name": "Transaction Payment Splitting Computation",
+                        "in": "body",
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/PayloadData"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "Transaction payment splitting is computed successfully",
+                        "schema": {
+                            "$ref": "#/definitions/PaymentSplitterResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error occured during payment splitting computation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "Error": {
+                                    "type": "string",
+                                    "example": "Error: 'SplitInfo' array can contain only a minimum of 1 split entity and a maximum of 20 entities."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "PayloadData": {
+            "type": "object",
+            "properties": {
+                "ID": {
+                    "type": "number",
+                    "example": 1528
+                },
+                "Amount": {
+                    "type": "number",
+                    "example": 12850
+                },
+                "Currency": {
+                    "type": "string",
+                    "example": "NGN"
+                },
+                "CustomerEmail": {
+                    "type": "string",
+                    "example": "example@gmail.com"
+                },
+                "SplitInfo": {
+                    "type": "array",
+                    "example": [
+                        {
+                            "SplitType": "FLAT",
+                            "SplitValue": 45,
+                            "SplitEntityId": "LNPYACC0019"
+                        }
+                    ]
+                }
+            }
+        },
+        "PaymentSplitterResponse": {
+            "type": "object",
+            "properties": {
+                "ID": {
+                    "type": "number",
+                    "example": "1308"
+                },
+                "Balance": {
+                    "type": "number",
+                    "example": 0
+                },
+                "SplitBreakdown": {
+                    "type": "array",
+                    "example": [
+                        {
+                            "SplitEntityId": "LNPYACC0019",
+                            "Amount": 450
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
